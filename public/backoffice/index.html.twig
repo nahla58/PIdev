@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <!-- Ajoutez ici vos liens vers les feuilles de style CSS si nécessaire -->
+    <style>
+        body {
+            background-color: #f0f0f0; /* Couleur de fond */
+            color: #333; /* Couleur du texte */
+            font-family: Arial, sans-serif; /* Police de caractères */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff; /* Couleur de fond de la zone principale */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2196F3; /* Couleur d'arrière-plan de l'en-tête du tableau */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Couleur de fond des lignes paires du tableau */
+        }
+
+        a {
+            color: #2196F3; /* Couleur du lien */
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Soulignement au survol */
+        }
+
+        .no-records {
+            text-align: center;
+            font-style: italic;
+            color: #777; /* Couleur du texte en cas d'absence d'enregistrements */
+        }
+
+        .create-new {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{% block title %}Activite index{% endblock %}</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Date_heure</th>
+                    <th>Prix</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for activite in activites %}
+                <tr>
+                    <td>{{ activite.id }}</td>
+                    <td>{{ activite.nom }}</td>
+                    <td>{{ activite.type }}</td>
+                    <td>{{ activite.dateHeure ? activite.dateHeure|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ activite.prix }}</td>
+                    <td>
+                        <a href="{{ path('app_activite_show', {'id': activite.id}) }}">Show</a>
+                        <a href="{{ path('app_activite_edit', {'id': activite.id}) }}">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="no-records">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_activite_new') }}" class="create-new">Create new</a>
+    </div>
+</body>
+</html>
+

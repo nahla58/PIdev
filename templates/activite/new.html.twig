@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New activite{% endblock %}
+
+{% block body %}
+    <div style="text-align: center; color: #007bff; margin-top: 50px;">
+        <h1>Create new activite</h1>
+
+        {{ include('activite/_form.html.twig') }}
+
+        <a href="{{ path('app_activite_index') }}" style="color: #007bff; text-decoration: none;">Back to list</a>
+    </div>
+{% endblock %}

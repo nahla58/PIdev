@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="service">
+        <div class="container">
+            <div class="section-header text-center">
+                <div id="google_translate_element" style="margin-bottom: 20px;"></div>
+                <h1 style="margin-top: 30px; margin-bottom: 30px; color: #333; font-size: 2.5em; text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Explorez nos Activités</h1>
+            </div>
+            <div class="row">
+                {% for activite in activites %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="service-item card" style="border: none; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s;">
+                            <img src="{{ asset('uploads/' ~ activite.image)}}" style="width:100%; height:auto; border-top-left-radius: 15px; border-top-right-radius: 15px;" alt="">
+                            <div class="card-body" style="padding: 20px;">
+                                <center><h2 style="color: #333; margin-top: 10px; font-size: 1.5em;">{{ activite.getNom() }}</h2></center>
+                                <p><strong style="color: #696969">Type:</strong> {{ activite.getType() }}</p>
+                                <p><strong style="color: #696969">Date et Heure:</strong> {{ activite.getDateHeure()|date('Y-m-d H:i:s') }}</p>
+                                <p><strong style="color: #696969">Prix:</strong> {{ activite.getPrix() }} €</p>
+                                <p><strong style="color: #696969">Description:</strong> {{ activite.getDescription() }}</p>
+
+                                <!-- Bouton "Réserver" -->
+                                <button type="button" onclick="reserverActivite({{ activite.getId() }})" class="btn btn-success" style="width: 100%; margin-top: 15px; transition: background-color 0.3s;">Réserver</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+             
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Script JavaScript (si nécessaire) -->
+    <script>
+        function reserverActivite(activiteId) {
+            // Ajoutez ici le code pour réserver l'activité avec l'ID activiteId
+            alert("Activité réservée avec l'ID : " + activiteId);
+        }
+    </script>
+
+{% endblock %}

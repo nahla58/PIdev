@@ -1,0 +1,138 @@
+{% extends 'basedb.html.twig' %}
+
+{% block title %}activite {% endblock %}
+
+{% block body %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+   
+   
+
+
+   
+    <!-- Ajoutez ici vos liens vers les feuilles de style CSS si nécessaire -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Ajoutez votre style CSS personnalisé ici */
+        .green-text {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: rgb(46, 149, 204);"> activite</h1>
+
+    <!-- Barre de recherche dynamique -->
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Rechercher par nom ou numéro">
+    
+    <!-- Boutons de tri -->
+    <button onclick="sortTable(3)">Trier par prix</button>
+
+    <!-- Bouton pour générer le PDF -->
+    <button onclick="generatePdf">Générer PDF</button>
+   
+    <table class="table" id="activiteTable">
+        <thead>
+            <tr>
+                <th style="color: rgb(46, 149, 204);"> nom</th>
+                <th style="color: rgb(46, 149, 204);">type</th>
+                <th style="color: rgb(46, 149, 204);">Dateheure</th>
+                <th style="color: rgb(46, 149, 204);">prix</th>
+                <th style="color: rgb(46, 149, 204);">description</th>
+                <th style="color: rgb(46, 149, 204);">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for activite in activites %}
+            <tr>
+                <td>{{ activite.nom }}</td>
+                <td><span class="green-text">{{ activite.type }}</span></td>
+                <td>{{ activite.dateHeure ? activite.dateHeure|date('Y-m-d H:i:s') : '' }}</td>
+                <td><span class="green-text">{{ activite.prix }}</span></td>
+                <td>{{ activite.description }}</td>
+                <td>
+                    <a href="{{ path('app_activite_show', {'id': activite.id}) }}"><i class="fas fa-eye"></i> show</a>
+                    <a href="{{ path('app_activite_edit', {'id': activite.id}) }}"><i class="fas fa-edit"></i> edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Rien à afficher</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_activite_new') }}">Ajouter nouveau</a>
+</body>
+<script>
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("activiteTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) {
+            var tdNom = tr[i].getElementsByTagName("td")[0]; // 0 correspond à l'index de la colonne "nom"
+            var tdNumero = tr[i].getElementsByTagName("td")[3]; // 3 correspond à l'index de la colonne "prix"
+
+            if (tdNom && tdNumero) {
+                var txtValueNom = tdNom.textContent || tdNom.innerText;
+                var txtValueNumero = tdNumero.textContent || tdNumero.innerText;
+
+                if (txtValueNom.toUpperCase().indexOf(filter) > -1 || txtValueNumero.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+
+    var sortOrder = 1; // 1 for ascending, -1 for descending
+
+    function sortTable(columnIndex) {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("activiteTable");
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[columnIndex];
+                y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+                if (sortOrder === 1 && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                } else if (sortOrder === -1 && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+        // Toggle sortOrder for the next click
+        sortOrder = -sortOrder;
+    }
+
+    function generatePDF() {
+        var table = document.getElementById("activiteTable");
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        pdf.autoTable({ html: '#activiteTable' });
+        pdf.save('table.pdf');
+    }
+   
+</script>
+</html>
+{{ knp_pagination_render(activites) }}
+{% endblock %}

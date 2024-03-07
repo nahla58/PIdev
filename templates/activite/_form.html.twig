@@ -1,0 +1,60 @@
+<style>
+    /* Style pour le formulaire */
+    form {
+        margin-top: 20px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style pour les étiquettes du formulaire */
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    /* Style pour les champs de formulaire */
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        color: #495057;
+        transition: border-color 0.3s;
+    }
+
+    /* Style pour les champs de formulaire au survol */
+    input:hover, textarea:hover {
+        border-color: #007bff;
+    }
+
+    /* Style pour le bouton du formulaire */
+    button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    /* Style pour le bouton du formulaire au survol */
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

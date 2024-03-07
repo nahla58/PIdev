@@ -1,0 +1,74 @@
+/**
+     * @Route("/pdf", name="PDF_activite", methods={"GET"})
+     */
+    public function pdf(activiteRepository $activiteRepository): Response
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('activite/pdf.html.twig', [
+            'activites' => $activiteRepository->findAll(),
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        return new Response($dompdf->output(), Response::HTTP_OK, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
+Vous avez envoyé
+A taoa nhawell nrigulhom merciii
+georgina
+Nourhenne Belhedi
+<h1 class="align-center">Bienvenue dans votre application TunVista</h1>
+
+<p>Voici la liste de tous les hôtels</p>
+
+<table class="table" border="5">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Nom_activite</th>
+            <th>Nbre_etoile</th>
+            <th>Adresse_activite</th>
+            <th>Prix_nuit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activite in activites %}
+            <tr>
+                <td>{{ activite.idH }}</td>
+                <td>
+                    {% if activite.image %}
+                        <img src="{{ asset('uploads/' ~ activite.image) }}" width="250" height="150">
+                    {% else %}
+                        <img src="{{ asset('uploads/Not found.jpg') }}" width="250" height="150">
+                    {% endif %}
+                </td>
+                <td>{{ activite.nom }}</td> {# Utilisation de la méthode getter pour récupérer le nom de l'hôtel #}
+                <td>{{ activite.type }}</td>
+                <td>{{ activite.date_heure }}</td>
+                <td>{{ activite.image }}</td>
+                <td>{{ activite.description }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

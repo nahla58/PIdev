@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Ajoutez ici vos liens vers les feuilles de style CSS si nécessaire -->
+    <style>
+        body {
+            background-color: #f0f0f0; /* Couleur de fond */
+            color: #333; /* Couleur du texte */
+            font-family: Arial, sans-serif; /* Police de caractères */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff; /* Couleur de fond de la zone principale */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2196F3; /* Couleur d'arrière-plan de l'en-tête du tableau */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Couleur de fond des lignes paires du tableau */
+        }
+
+        a {
+            color: #2196F3; /* Couleur du lien */
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Soulignement au survol */
+        }
+
+        .back-to-list {
+            display: block;
+            margin-top: 20px;
+        }
+
+        .edit-link {
+            margin-right: 10px;
+        }
+
+        .delete-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{% block title %}Activite{% endblock %}</h1>
+
+        <table>
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ activite.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ activite.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>{{ activite.type }}</td>
+                </tr>
+                <tr>
+                    <th>Date_heure</th>
+                    <td>{{ activite.dateHeure ? activite.dateHeure|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td>{{ activite.prix }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_activite_index') }}" class="back-to-list">Back to list</a>
+        <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="edit-link">Edit</a>
+
+        {{ include('activite/_delete_form.html.twig') }}
+    </div>
+
